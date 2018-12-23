@@ -33,7 +33,7 @@ namespace WaterWars.Core
             //Each key should be bound to an event.
             for (int i = 0; i < supportedKeys.Length; i++)
             {
-                //if key is pressed , invoke a key hold event if event exists and has a listener 
+                //if key is held down, invoke a key hold event if event exists and has a listener 
                 if (Input.GetKey(supportedKeys[i]))
                 {
                     if (i < keyHoldEvents.Count && keyHoldEvents[i] != null)
@@ -44,7 +44,7 @@ namespace WaterWars.Core
                     }    
                 }
 
-                //if key is pressed, invoke a key pressed event if event exists and has a listener . Don't call again until is released
+                //if key is pressed just in this frame, invoke a key pressed event if event exists and has a listener . Don't call again until is released
                 if (Input.GetKeyDown(supportedKeys[i]))
                 {
                     if (i < keyHoldEvents.Count && keyPressedEvents[i] != null)
