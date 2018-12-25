@@ -18,8 +18,24 @@ namespace WaterWars.Core
         [SerializeField] List<KeyboardEvent> keyPressedEvents;
         [SerializeField] UnityEvent onLeftClick;
         [SerializeField] UnityEvent onRightClick;
+        [SerializeField] UnityEvent onLeftMouseBtnHold;
+        [SerializeField] UnityEvent onRightMouseBtnHold;
         [SerializeField] UnityEvent onMouseWheelScrollUp;
         [SerializeField] UnityEvent onMouseWheelScrollDown;
+
+        private static InputManager _instance;
+
+        public static InputManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = FindObjectOfType<InputManager>();
+
+                return _instance;
+            }
+        }
+
 
         // Use this for initialization
         void Start ()
@@ -33,12 +49,11 @@ namespace WaterWars.Core
             //Each key should be bound to an event.
             for (int i = 0; i < supportedKeys.Length; i++)
             {
-                //if key is held down, invoke a key hold event if event exists and has a listener 
+                //if key is held down in multiple frames, invoke a key hold event if event exists and has a listener 
                 if (Input.GetKey(supportedKeys[i]))
                 {
                     if (i < keyHoldEvents.Count && keyHoldEvents[i] != null)
                     {
-                        Debug.Log("Key hold: " + supportedKeys[i]);
                         keyHoldEvents[i].Invoke(supportedKeys[i].ToString());
                         break;
                     }    
@@ -49,7 +64,6 @@ namespace WaterWars.Core
                 {
                     if (i < keyHoldEvents.Count && keyPressedEvents[i] != null)
                     {
-                        Debug.Log("Key pressed: " + supportedKeys[i]);
                         keyPressedEvents[i].Invoke(supportedKeys[i].ToString());
                         break;
                     }
@@ -61,16 +75,25 @@ namespace WaterWars.Core
             {
                 if (onLeftClick!=null)
                     onLeftClick.Invoke();
-
-                Debug.Log("Left click");
             }
 
             else if (Input.GetMouseButtonDown(1))
             {
                 if (onRightClick!=null)
                     onRightClick.Invoke();
+            }
 
-                Debug.Log("Right click");
+            //Detect mouse button hold for multiple frames, and invoke related event
+            if (Input.GetMouseButton(0))
+            {
+                if (onLeftMouseBtnHold != null)
+                    onLeftMouseBtnHold.Invoke();
+            }
+
+            else if (Input.GetMouseButton(1))
+            {
+                if (onRightMouseBtnHold != null)
+                    onRightMouseBtnHold.Invoke();
             }
 
             //Detect mouse wheel scroll up or down, and invoke related event
@@ -78,16 +101,12 @@ namespace WaterWars.Core
             {
                 if (onMouseWheelScrollUp!=null)
                     onMouseWheelScrollUp.Invoke();
-
-                Debug.Log("Mouse wheel up");
             }
 
             else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
             {
                 if (onMouseWheelScrollDown!=null)
                     onMouseWheelScrollDown.Invoke();
-
-                Debug.Log("Mouse wheel down");
             }
         }
     }
