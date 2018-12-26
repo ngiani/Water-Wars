@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,14 +7,15 @@ namespace WaterWars.Core
 { 
     public class CameraManager : MonoBehaviour
     {
-        [SerializeField] Camera camera;
+        [SerializeField] Camera myCamera;
         [SerializeField] float moveSpeed;
         [SerializeField] float zoomSpeed;
         [SerializeField] float zoomRotationSpeed;
         [SerializeField] float rotationSpeed;
-        [SerializeField] Vector3 currentRotation;
-        Vector3 rotationPivot;
+        [SerializeField] Vector3 originalEulerRotation;
 
+        Vector3 currenEulerRotation;
+        Vector3 rotationPivot;
 
         private static CameraManager _instance;
 
@@ -28,60 +30,72 @@ namespace WaterWars.Core
             }
         }
 
+        private bool _canMoveToTarget;
+
+        public bool CanMoveToTarget
+        {
+            get { return _canMoveToTarget; }
+            set { _canMoveToTarget = value; }
+        }
+
         // Use this for initialization
         void Start ()
         {
+            AppManager.Instance.ItemSelectedEvent += ItemSelectedHandler;
+            currenEulerRotation = originalEulerRotation;
+            DOTween.Init();
+        }
 
-	    }
-	
-	    // Update is called once per frame
-	    void Update ()
+        private void ItemSelectedHandler(object sender, ItemSelectedArgs e)
         {
-		
-        
+            MoveTo(e.itemObj);
+        }
+
+        // Update is called once per frame
+        void Update ()
+        {
 
 	    }
 
         public void MoveForward()
         {
-            transform.Translate(new Vector3(0, 0, moveSpeed * Time.deltaTime), Space.Self);
+            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.Self);
         }
 
         public void MoveBackward()
         {
-            transform.Translate(new Vector3(0, 0, -moveSpeed * Time.deltaTime), Space.Self);
+            transform.Translate(-Vector3.forward * moveSpeed * Time.deltaTime, Space.Self);
         }
 
         public void MoveRight()
         {
-            transform.Translate(new Vector3(moveSpeed * Time.deltaTime, 0, 0), Space.Self);
+            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.Self);
         }
 
         public void MoveLeft()
         {
-            transform.Translate(new Vector3(-moveSpeed * Time.deltaTime, 0, 0), Space.Self);
+            transform.Translate(-Vector3.right * moveSpeed * Time.deltaTime, Space.Self);
         }
 
         public void ZoomIn()
         {
-            if (currentRotation.x >= 0)
+            if (currenEulerRotation.x >= 0)
             {
 
-                camera.transform.Translate(new Vector3(0, 0, zoomSpeed * Time.deltaTime), Space.Self);
-                currentRotation -= new Vector3(1, 0, 0) * zoomRotationSpeed * Time.deltaTime;
-                camera.transform.localEulerAngles = currentRotation;
-
+                myCamera.transform.Translate(Vector3.forward * zoomSpeed * Time.deltaTime, Space.Self);
+                currenEulerRotation -= Vector3.right * zoomRotationSpeed * Time.deltaTime;
+                myCamera.transform.localEulerAngles = currenEulerRotation;
             }
 
         }
 
         public void ZoomOut()
         {
-            if (currentRotation.x <= 90)
+            if (currenEulerRotation.x <= 90)
             {
-                camera.transform.Translate(new Vector3(0, 0, -zoomSpeed * Time.deltaTime), Space.Self);
-                currentRotation += new Vector3(1, 0, 0) * zoomRotationSpeed * Time.deltaTime;
-                camera.transform.localEulerAngles = currentRotation;
+                myCamera.transform.Translate(-Vector3.forward * zoomSpeed * Time.deltaTime, Space.Self);
+                currenEulerRotation += Vector3.right * zoomRotationSpeed * Time.deltaTime;
+                myCamera.transform.localEulerAngles = currenEulerRotation;
             }
         }
 
@@ -93,10 +107,29 @@ namespace WaterWars.Core
         public void Rotate()
         {
             if (Input.mousePosition.x > rotationPivot.x)
-                transform.Rotate(new Vector3(0, 1, 0), rotationSpeed * Time.deltaTime);
+                transform.Rotate(new Vector3(0, 1, 0), rotationSpeed * Time.deltaTime, Space.Self);
 
             else if (Input.mousePosition.x < rotationPivot.x)
-                transform.Rotate(new Vector3(0, 1, 0), -rotationSpeed * Time.deltaTime);
+                transform.Rotate(new Vector3(0, 1, 0), -rotationSpeed * Time.deltaTime, Space.Self);
+        }
+
+
+        void MoveTo(GameObject target)
+        {
+            if (_canMoveToTarget)
+            {
+                 //Smoothly move to target and align to its rotation 
+                transform.DOMove(target.transform.position, 1.0f);
+                transform.DORotate(new Vector3(0, 0, 0), 1.0f);
+                myCamera.transform.DOLocalMove(new Vector3(0, 0, 0), 1.0f);
+                myCamera.transform.DOLocalRotate(target.transform.localRotation.eulerAngles, 1.0f);
+
+                DOTween.PlayAll();
+
+                currenEulerRotation = originalEulerRotation;
+
+                _canMoveToTarget = false;
+            }
         }
     }
 }

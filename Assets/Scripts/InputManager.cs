@@ -16,12 +16,16 @@ namespace WaterWars.Core
         [SerializeField] KeyCode[] supportedKeys;
         [SerializeField] List<KeyboardEvent> keyHoldEvents;
         [SerializeField] List<KeyboardEvent> keyPressedEvents;
-        [SerializeField] UnityEvent onLeftClick;
-        [SerializeField] UnityEvent onRightClick;
-        [SerializeField] UnityEvent onLeftMouseBtnHold;
-        [SerializeField] UnityEvent onRightMouseBtnHold;
-        [SerializeField] UnityEvent onMouseWheelScrollUp;
-        [SerializeField] UnityEvent onMouseWheelScrollDown;
+        [SerializeField] UnityEvent LeftClick;
+        [SerializeField] UnityEvent DoubleLeftClick;
+        [SerializeField] UnityEvent RightClick;
+        [SerializeField] UnityEvent LeftMouseBtnHold;
+        [SerializeField] UnityEvent RightMouseBtnHold;
+        [SerializeField] UnityEvent MouseWheelScrollUp;
+        [SerializeField] UnityEvent MouseWheelScrollDown;
+        [SerializeField] float doubleClickDelta;
+
+        float lastClickTime;
 
         private static InputManager _instance;
 
@@ -41,6 +45,7 @@ namespace WaterWars.Core
         void Start ()
         {
             DontDestroyOnLoad(this);
+            lastClickTime = float.NegativeInfinity;
 	    }
 	
 	    // Update is called once per frame
@@ -49,20 +54,20 @@ namespace WaterWars.Core
             //Each key should be bound to an event.
             for (int i = 0; i < supportedKeys.Length; i++)
             {
-                //if key is held down in multiple frames, invoke a key hold event if event exists and has a listener 
+                //if key is being held down for multiple frames, invoke related key hold event if event exists and has a listener 
                 if (Input.GetKey(supportedKeys[i]))
                 {
-                    if (i < keyHoldEvents.Count && keyHoldEvents[i] != null)
+                    if (i < keyHoldEvents.Count && keyHoldEvents[i] != null && keyHoldEvents[i].GetPersistentEventCount() > 0)
                     {
                         keyHoldEvents[i].Invoke(supportedKeys[i].ToString());
                         break;
                     }    
                 }
 
-                //if key is pressed just in this frame, invoke a key pressed event if event exists and has a listener . Don't call again until is released
+                //if key is pressed just in this frame, invoke related key pressed event if event exists and has a listener 
                 if (Input.GetKeyDown(supportedKeys[i]))
                 {
-                    if (i < keyHoldEvents.Count && keyPressedEvents[i] != null)
+                    if (i < keyHoldEvents.Count && keyPressedEvents[i] != null && keyPressedEvents[i].GetPersistentEventCount() > 0)
                     {
                         keyPressedEvents[i].Invoke(supportedKeys[i].ToString());
                         break;
@@ -70,43 +75,55 @@ namespace WaterWars.Core
                 }
             }
 
-            //Detect mouse button click, and invoke related event
+            //Detect mouse button click (single or double), and invoke related event
             if (Input.GetMouseButtonDown(0))
             {
-                if (onLeftClick!=null)
-                    onLeftClick.Invoke();
+                if (Time.time - lastClickTime <= doubleClickDelta)
+                {
+                    if (DoubleLeftClick != null && DoubleLeftClick.GetPersistentEventCount() > 0)
+                        DoubleLeftClick.Invoke();
+
+                }
+                   
+                else
+                {
+                    if (LeftClick != null && LeftClick.GetPersistentEventCount() > 0)
+                        LeftClick.Invoke();
+                }
+
+                lastClickTime = Time.time;
             }
 
             else if (Input.GetMouseButtonDown(1))
             {
-                if (onRightClick!=null)
-                    onRightClick.Invoke();
+                if (RightClick!=null && RightClick.GetPersistentEventCount() > 0)
+                    RightClick.Invoke();
             }
 
-            //Detect mouse button hold for multiple frames, and invoke related event
+            //Detect mouse button being held down for multiple frames, and invoke related event
             if (Input.GetMouseButton(0))
             {
-                if (onLeftMouseBtnHold != null)
-                    onLeftMouseBtnHold.Invoke();
+                if (LeftMouseBtnHold != null && LeftMouseBtnHold.GetPersistentEventCount() > 0)
+                    LeftMouseBtnHold.Invoke();
             }
 
             else if (Input.GetMouseButton(1))
             {
-                if (onRightMouseBtnHold != null)
-                    onRightMouseBtnHold.Invoke();
+                if (RightMouseBtnHold != null && RightMouseBtnHold.GetPersistentEventCount() > 0)
+                    RightMouseBtnHold.Invoke();
             }
 
             //Detect mouse wheel scroll up or down, and invoke related event
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
             {
-                if (onMouseWheelScrollUp!=null)
-                    onMouseWheelScrollUp.Invoke();
+                if (MouseWheelScrollUp!=null && MouseWheelScrollUp.GetPersistentEventCount() > 0)
+                    MouseWheelScrollUp.Invoke();
             }
 
             else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
             {
-                if (onMouseWheelScrollDown!=null)
-                    onMouseWheelScrollDown.Invoke();
+                if (MouseWheelScrollDown!=null && MouseWheelScrollDown.GetPersistentEventCount() > 0)
+                    MouseWheelScrollDown.Invoke();
             }
         }
     }
