@@ -34,7 +34,6 @@ namespace WaterWars.Core
 
         public event EventHandler<ItemSelectedArgs> ItemSelectedEvent;
 
-        [SerializeField]
         private SelectableItem _selectedItem;
 
         public SelectableItem SelectedItem
@@ -48,14 +47,14 @@ namespace WaterWars.Core
             {
                 _selectedItem = value;
 
-                ItemSelectedEvent.Invoke(this, new ItemSelectedArgs(_selectedItem.transform.GetChild(0).gameObject));
+                ItemSelectedEvent.Invoke(this, new ItemSelectedArgs(_selectedItem.gameObject));
             }
         }
 
         // Use this for initialization
         void Start()
         {
-
+            DontDestroyOnLoad(this);
         }
 
         // Update is called once per frame
