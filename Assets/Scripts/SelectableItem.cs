@@ -20,7 +20,7 @@ namespace WaterWars.Core
         }
 
         //Call this when object receives ray
-        public void onGetRay()
+        public void onGetRay(RaycastHit hitInfo)
         {
             AppManager.Instance.SelectedItem = this;
         }

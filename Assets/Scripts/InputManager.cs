@@ -44,7 +44,6 @@ namespace WaterWars.Core
         // Use this for initialization
         void Start ()
         {
-            DontDestroyOnLoad(this);
             lastClickTime = float.NegativeInfinity;
 	    }
 	
