@@ -45,7 +45,7 @@ namespace WaterWars.Core
                 layerMask = ~layerMask;
             }
 
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, maxRaycastDistance, layerMask))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, maxRaycastDistance, layerMask, QueryTriggerInteraction.Ignore))
             {
                 hitInfo.transform.gameObject.SendMessage("onGetRay", hitInfo);
             }

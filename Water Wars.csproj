@@ -245,10 +245,12 @@
     <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUI.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
+    <Compile Include="Assets\ItemEventsManager.cs" />
     <Compile Include="Assets\Scripts\AppManager.cs" />
     <Compile Include="Assets\Scripts\BuildCommand.cs" />
     <Compile Include="Assets\Scripts\BuildingItem.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
+    <Compile Include="Assets\Scripts\FactionItem.cs" />
     <Compile Include="Assets\Scripts\FactoryControlPanel.cs" />
     <Compile Include="Assets\Scripts\Ground.cs" />
     <Compile Include="Assets\Scripts\ICommand.cs" />
@@ -256,6 +258,7 @@
     <Compile Include="Assets\Scripts\MovableItem.cs" />
     <Compile Include="Assets\Scripts\PhysicsManager.cs" />
     <Compile Include="Assets\Scripts\SelectableItem.cs" />
+    <Compile Include="Assets\Scripts\ShootingItem.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
     <Compile Include="Assets\Scripts\VehicleControlPanel.cs" />
   </ItemGroup>

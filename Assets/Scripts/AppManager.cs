@@ -6,7 +6,6 @@ using UnityEngine.Events;
 
 namespace WaterWars.Core
 {
-
     public class ItemSelectedArgs : EventArgs
     {
         public GameObject itemObj;
