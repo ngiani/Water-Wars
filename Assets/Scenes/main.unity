@@ -847,17 +847,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 419209750}
-        m_MethodName: SetRotationPivot
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 766164663}
         m_MethodName: SendRay
         m_Mode: 6
@@ -876,6 +865,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 419209750}
         m_MethodName: set_CanMoveToTarget
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 766164663}
+        m_MethodName: SendRay
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
