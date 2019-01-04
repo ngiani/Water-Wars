@@ -8,6 +8,7 @@ namespace WaterWars.Core
     public class UIManager : MonoBehaviour
     {
         [SerializeField] GameObject vehicleControlPanel;
+        [SerializeField] GameObject factoryControlPanel;
 
         private static UIManager _instance;
 
@@ -38,12 +39,20 @@ namespace WaterWars.Core
         private void ActivateControlPanel(object sender, ItemSelectedArgs e)
         {
             //Activate vehicle control panel if the object is movable
-            if (e.itemObj.GetComponent<MovableItem>() != null)
+            if (e.itemObj.GetComponent<MovableItem>() != null && e.itemObj.GetComponent<BuildingItem>() == null)
             {
                 vehicleControlPanel.SetActive(true);
+                factoryControlPanel.SetActive(false);
             }
+            else if (e.itemObj.GetComponent<BuildingItem>() != null && e.itemObj.GetComponent<MovableItem>() == null)
+            {
+                factoryControlPanel.SetActive(true);
+                vehicleControlPanel.SetActive(false);
+            } 
+
             else
             {
+                factoryControlPanel.SetActive(false);
                 vehicleControlPanel.SetActive(false);
             }
         }

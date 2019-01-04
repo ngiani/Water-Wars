@@ -140,7 +140,15 @@ namespace WaterWars.Core
             {
                 transform.parent = originalCameraParent;
 
-                MoveTo(obj.transform.GetChild(0).gameObject);
+                for (int i = 0; i < obj.transform.childCount; i++)
+                {
+                    if (obj.transform.GetChild(i).tag == "CameraPlace")
+                    {
+                        MoveTo(obj.transform.GetChild(i).gameObject);
+                        break;
+                    }
+                }
+
             }
 
 

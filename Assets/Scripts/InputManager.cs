@@ -19,8 +19,10 @@ namespace WaterWars.Core
         [SerializeField] UnityEvent LeftClick;
         [SerializeField] UnityEvent DoubleLeftClick;
         [SerializeField] UnityEvent RightClick;
+        [SerializeField] UnityEvent CenterClick;
         [SerializeField] UnityEvent LeftMouseBtnHold;
         [SerializeField] UnityEvent RightMouseBtnHold;
+        [SerializeField] UnityEvent CenterMouseBtnHold;
         [SerializeField] UnityEvent MouseWheelScrollUp;
         [SerializeField] UnityEvent MouseWheelScrollDown;
         [SerializeField] float doubleClickDelta;
@@ -97,6 +99,12 @@ namespace WaterWars.Core
             {
                 if (RightClick!=null && RightClick.GetPersistentEventCount() > 0)
                     RightClick.Invoke();
+            } 
+
+            else if (Input.GetMouseButtonDown(2))
+            {
+                if (CenterClick != null && CenterClick.GetPersistentEventCount() > 0)
+                    CenterClick.Invoke();
             }
 
             //Detect mouse button being held down for multiple frames, and invoke related event
@@ -110,6 +118,12 @@ namespace WaterWars.Core
             {
                 if (RightMouseBtnHold != null && RightMouseBtnHold.GetPersistentEventCount() > 0)
                     RightMouseBtnHold.Invoke();
+            }
+
+            else if (Input.GetMouseButton(2))
+            {
+                if (CenterMouseBtnHold != null && CenterMouseBtnHold.GetPersistentEventCount() > 0)
+                    CenterMouseBtnHold.Invoke();
             }
 
             //Detect mouse wheel scroll up or down, and invoke related event

@@ -246,8 +246,12 @@
     <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
     <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\Scripts\AppManager.cs" />
+    <Compile Include="Assets\Scripts\BuildCommand.cs" />
+    <Compile Include="Assets\Scripts\BuildingItem.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
+    <Compile Include="Assets\Scripts\FactoryControlPanel.cs" />
     <Compile Include="Assets\Scripts\Ground.cs" />
+    <Compile Include="Assets\Scripts\ICommand.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\MovableItem.cs" />
     <Compile Include="Assets\Scripts\PhysicsManager.cs" />
