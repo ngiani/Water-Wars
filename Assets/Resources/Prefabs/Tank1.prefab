@@ -759,6 +759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e1b836a2db20434b8ad49dfe4397640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationToTargetSpeed: 50
 --- !u!114 &114515413725562178
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -788,6 +789,11 @@ MonoBehaviour:
     m_TypeName: WaterWars.Core.ObjectEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   onEnemyAway:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onStartMoving:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,

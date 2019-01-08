@@ -1,7 +1,4 @@
-﻿namespace WaterWars.Core
+﻿internal interface ICommand
 {
-    internal interface ICommand
-    {
-        void Execute();
-    }
+    void Execute();
 }

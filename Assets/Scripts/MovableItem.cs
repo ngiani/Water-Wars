@@ -41,6 +41,7 @@ namespace WaterWars.Core
             currentTarget = new Vector3(target.x, transform.position.y, target.z);
             transform.DOLookAt(currentTarget, 0.1f);
             moving = true;
+            itemEventsManager.onStartMoving.Invoke();
         }
 
         public void Stop()
@@ -48,6 +49,8 @@ namespace WaterWars.Core
             moving = false;
             itemEventsManager.onStopMoving.Invoke();
         }
+
+
     }
 }
 

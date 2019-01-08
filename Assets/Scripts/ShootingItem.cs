@@ -9,8 +9,17 @@ namespace WaterWars.Core
     {
         ItemEventsManager itemEventsManager;
         GameObject _shootingTarget;
-
         private bool _inRange;
+        private bool _canShoot;
+
+        public bool CanShoot
+        {
+            get { return _canShoot; }
+            set { _canShoot = value; }
+        }
+
+        [SerializeField] ShootCommand shootCommandPrefab;
+        [SerializeField] float rotationToTargetSpeed;
 
         // Use this for initialization
         void Start()
@@ -21,7 +30,16 @@ namespace WaterWars.Core
         // Update is called once per frame
         void Update()
         {
+            if (_inRange && _canShoot && _shootingTarget != null)
+            {
+                var step = rotationToTargetSpeed * Time.deltaTime;
+                
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(_shootingTarget.transform.position - transform.position), step);
 
+                ShootCommand shootCommand = Instantiate<ShootCommand>(shootCommandPrefab, transform);
+                shootCommand.Execute();
+                shootCommand.onExecutionEnd.AddListener(() => { Destroy(shootCommand.gameObject);});
+            }
         }
 
         public void InRange(GameObject target)
@@ -34,15 +52,6 @@ namespace WaterWars.Core
         {
             _inRange = false;
             _shootingTarget = null;
-        }
-
-        public void Shoot()
-        {
-            if (_inRange && _shootingTarget != null)
-            {
-                transform.DOLookAt(_shootingTarget.transform.position, 1.0f);
-                Debug.Log("Shoot!");
-            }
         }
     }
 }

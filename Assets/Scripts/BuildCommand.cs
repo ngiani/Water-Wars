@@ -4,10 +4,8 @@ using UnityEngine.Events;
 
 namespace WaterWars.Core
 {
-    class BuildCommand : MonoBehaviour, ICommand
+    class BuildCommand : CommandObject
     {
-        public UnityEvent onExecutionEnd;
-
         [SerializeField] protected float _buildingTime;
         [SerializeField] protected string _prefabPath;
         private float _startBuildTime;
@@ -18,7 +16,7 @@ namespace WaterWars.Core
             set { _spawnPoint = value; }
         }
 
-        public void Execute()
+        public override void Execute()
         {
             StartCoroutine(WaitToSpawn());
         }

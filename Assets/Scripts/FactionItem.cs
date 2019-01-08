@@ -49,27 +49,6 @@ namespace WaterWars.Core
                 itemEventsManager.onEnemyAway.Invoke();
             }
         }
-
-        /*private void OnTriggerStay(Collider other)
-        {
-            FactionItem collidingItem = other.gameObject.GetComponent<FactionItem>();
-
-            //Enemy is going away if i am colliding with an item i am not an owner of
-            if (collidingItem != null && collidingItem.Owner != _owner)
-            {
-                itemEventsManager.onEnemyAway.Invoke();
-            }
-        }*/
-
-        private void OnCollisionEnter(Collision collision)
-        {
-           
-        }
-
-        private void OnCollisionExit(Collision collision)
-        {
-            
-        }
     }
 }
 
