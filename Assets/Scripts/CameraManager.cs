@@ -16,6 +16,7 @@ namespace WaterWars.Core
 
         Vector3 currenEulerRotation;
         Vector3 rotationPivot;
+        Transform originalCameraParent;
 
         private static CameraManager _instance;
 
@@ -43,12 +44,13 @@ namespace WaterWars.Core
         {
             AppManager.Instance.ItemSelectedEvent += ItemSelectedHandler;
             currenEulerRotation = originalEulerRotation;
+            originalCameraParent = transform.parent;
             DOTween.Init();
         }
 
         private void ItemSelectedHandler(object sender, ItemSelectedArgs e)
         {
-            MoveTo(e.itemObj);
+            HandleSelectObj(e.itemObj);
         }
 
         // Update is called once per frame
@@ -119,10 +121,10 @@ namespace WaterWars.Core
             if (_canMoveToTarget)
             {
                  //Smoothly move to target and align to its rotation 
-                transform.DOMove(target.transform.position, 1.0f);
-                transform.DORotate(new Vector3(0, 0, 0), 1.0f);
-                myCamera.transform.DOLocalMove(new Vector3(0, 0, 0), 1.0f);
-                myCamera.transform.DOLocalRotate(target.transform.localRotation.eulerAngles, 1.0f);
+                transform.DOMove(target.transform.position, 3.0f);
+                transform.DORotate(new Vector3(0, target.transform.eulerAngles.y, 0), 3.0f);
+                myCamera.transform.DOLocalMove(new Vector3(0, 0, 0), 3.0f);
+                myCamera.transform.DOLocalRotate(target.transform.localRotation.eulerAngles, 3.0f);
 
                 DOTween.PlayAll();
 
@@ -130,6 +132,26 @@ namespace WaterWars.Core
 
                 _canMoveToTarget = false;
             }
+        }
+
+        void HandleSelectObj(GameObject obj)
+        {
+            if (obj.GetComponent<SelectableItem>())
+            {
+                transform.parent = originalCameraParent;
+
+                for (int i = 0; i < obj.transform.childCount; i++)
+                {
+                    if (obj.transform.GetChild(i).tag == "CameraPlace")
+                    {
+                        MoveTo(obj.transform.GetChild(i).gameObject);
+                        break;
+                    }
+                }
+
+            }
+
+
         }
     }
 }

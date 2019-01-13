@@ -11,7 +11,6 @@ namespace WaterWars.Core
 
         private static PhysicsManager _instance;
 
-
         public static PhysicsManager Instance
         {
             get
@@ -35,13 +34,20 @@ namespace WaterWars.Core
 
         }
 
-        public void SendRay()
+        public void SendRay(bool ignoreGround)
         {
             RaycastHit hitInfo;
 
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, maxRaycastDistance))
+            int layerMask = 1 << 8;
+
+            if (ignoreGround)
             {
-                hitInfo.transform.gameObject.SendMessage("onGetRay");
+                layerMask = ~layerMask;
+            }
+
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, maxRaycastDistance, layerMask, QueryTriggerInteraction.Ignore))
+            {
+                hitInfo.transform.gameObject.SendMessage("onGetRay", hitInfo);
             }
         }
     }
